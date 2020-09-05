@@ -13,15 +13,22 @@ class MainViewModel(
     private val repository: MainRepository
 ) : ViewModel() {
 
+    /**Welcome text can be observed in View*/
     private val _welcomeText = MutableLiveData<Event<String>>()
     val welcomeText: LiveData<Event<String>>
         get() = _welcomeText
 
+    /**
+     * Emit Empty String as a Seed
+     * NOTE: We can pass seed by constructor of MutableLiveData as well
+     * */
     init {
         _welcomeText.value = Event("")
     }
 
-
+    /**
+     * Update welcome message by user info
+     * */
     fun userDataLoaded(user: User) {
         _welcomeText.value = Event(context.getString(repository.welcomeMessage(), user.name))
     }

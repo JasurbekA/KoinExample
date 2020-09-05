@@ -17,9 +17,24 @@ import uz.jasurbek.koinexample.util.EventObserver
 class MainFragment : Fragment(R.layout.fragment_main) {
     private val sharedViewModel: SharedViewModel by sharedViewModel()
 
+    /**Without Scope
+     * NOT RECOMMENDED
+     * */
     // private val mainViewModel : MainViewModel by viewModel()
+
+    /**
+     * With Scope
+     * Create a scope with ID
+     * Inject using that scope
+     * */
     private val scope = getKoin().getOrCreateScope<MainFragment>(Constants.SCOPE_ID_MAIN_FRAGMENT)
     private val mainViewModel: MainViewModel by scope.viewModel(this)
+
+    /**
+     * Same data type can be injected by $named qualifier
+     * here is appName and versionName is String
+     * However they can be differentiated by their $named qualifier
+    * */
     private val appName: String by scope.inject(named(Constants.APP_NAME))
     private val versionName: String by scope.inject(named(Constants.APP_VERSION))
 
@@ -32,7 +47,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun initialize() {
         observeWelcomeMessage()
         observeUser()
-
     }
 
     private fun observeWelcomeMessage() {
@@ -47,7 +61,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             mainViewModel.userDataLoaded(it)
         })
     }
-
+    /**
+     * Clear up scope so that We can sure no reference exist after destroying View
+     * We will not get MEMORY_LEAK
+     * Destroying scope tells GC memory locations are ready to be reclaimed
+     * */
     override fun onDestroyView() {
         super.onDestroyView()
         scope.close()

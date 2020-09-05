@@ -19,7 +19,15 @@ import uz.jasurbek.koinexample.util.state.AuthState
 class AuthFragment : Fragment(R.layout.fragment_auth) {
     private val sharedViewModel: SharedViewModel by sharedViewModel()
 
+    /**Without Scope
+     * NOT RECOMMENDED
+     * */
     //private val authViewModel: AuthViewModel by viewModel()
+    /**
+     * With Scope
+     * Create a scope with ID
+     * Inject using that scope
+     * */
     private val authScope = getKoin().getOrCreateScope<AuthFragment>(Constants.SCOPE_ID_AUTH_FRAGMENT)
     private val authViewModel: AuthViewModel by authScope.viewModel(this)
 
@@ -64,6 +72,11 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
         navigate(R.id.mainFragment)
     }
 
+    /**
+     * Clear up scope so that We can sure no reference exist after destroying View
+     * We will not get MEMORY_LEAK
+     * Destroying scope tells GC memory locations are ready to be reclaimed
+     * */
     override fun onDestroyView() {
         super.onDestroyView()
         authScope.close()
