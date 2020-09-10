@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -44,11 +45,11 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 
     //Koin
-    def koin = "2.1.6"
     implementation "org.koin:koin-core:$koin"
     implementation "org.koin:koin-androidx-ext:$koin"
     implementation "org.koin:koin-androidx-scope:$koin"
     implementation "org.koin:koin-androidx-viewmodel:$koin"
+    testImplementation "org.koin:koin-test:$koin"
 
     // ViewModel + LiveData + LifeCycle + Compiler
     def lifecycle_version = "2.2.0"
